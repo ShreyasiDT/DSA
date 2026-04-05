@@ -1,0 +1,47 @@
+657. Robot Return to Origin
+https://leetcode.com/problems/robot-return-to-origin/description/?envType=daily-question&envId=2026-04-05
+Que in my words: a robot is at origin in 2D plane, given string where string[i] tells where the robots moves, up,down,left and right, we need to tell if after all those moves is it possible for robot to be at origin again.
+Approach: 1) kept a counter, incremented it when encountered "UP" and "Right" and decremented when encountered "Down" and "Left". At the end checked if the collected sum is 0 or not.
+Issue with this approach: hit this test case :
+        
+"UDDUURLRLLRRUDUDLLRLURLRLRLUUDLULRULRLDDDUDDDDLRRDDRDRLRLURRLLRUDURULULRDRDLURLUDRRLRLDDLUUULUDUUUUL"
+here we had :
+L: 27
+
+R: 25
+
+D: 22
+
+U: 26
+
+the total sum will be 0 but we can see that we need to check if user is compensating its move in both X and Y direction, by the above logic the total sum is 0 but user has moved left/right and up/down more with this robot can never make to origin.
+Fix: keep track of the movement of robot in both the direction, robot should walk in opposite direction equally so that the movement gets compensated and returns back to origin.
+
+
+Code:
+class Solution {
+public:
+//TC:O(n)
+//SC:O(1)
+    bool judgeCircle(string moves) {
+        int n = moves.size();
+        int totalCntX = 0;
+        int totalCntY = 0;
+        for(int i = 0 ; i < n ; i++){
+            if(moves[i] == 'U'){
+                totalCntX += 1;
+            }
+            else if(moves[i] == 'D'){
+                totalCntX -= 1;
+            }
+            else if(moves[i] == 'R'){
+                totalCntY += 2;
+            }
+            else{
+                totalCntY -= 2;
+            }
+        }
+        
+        return totalCntX == 0 && totalCntY == 0;
+    }
+};
